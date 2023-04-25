@@ -1,0 +1,25 @@
+<!-- Songcard ejs file -->
+<div class="col-lg-3">
+  <div class="card mb-4 shadow-sm">
+    <img src="<%= record.record_image_url%>" alt="Record Image" />
+    <div class="card-body">
+      <h5 class="card-title"><%= record.record_title %></h5>
+      <p class="card-text">Artist: <%= record.artist_name %></p>
+      <p class="card-text">Genres: <%= record.genre_title %></p>
+
+      <% if (isAuthenticated) { %>
+      <form
+        class="like-form"
+        method="POST"
+        action="/like"
+        style="display: none"
+      >
+        <input type="hidden" name="user_id" value="<%= userdata.user_id %>" />
+        <input type="hidden" name="record_id" value="<%= record.record_id %>" />
+      </form>
+      <button class="btn btn-primary btn-sm mr-2 like-btn">Like</button>
+      <button class="btn btn-outline-primary btn-sm">Add to Playlist</button>
+      <% } %>
+    </div>
+  </div>
+</div>

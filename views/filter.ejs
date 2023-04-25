@@ -1,0 +1,62 @@
+<!-- filter ejs file -->
+
+
+<form id="filterForm">
+ <!-- Add this inside your filter form -->
+<div class="form-group">
+  <label for="genreFilter">Genre:</label>
+  <select class="form-control" id="genreFilter" name="genre">
+    <option value="">All</option>
+    <!-- Genres will be populated here -->
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="artistFilter">Artist:</label>
+  <select class="form-control" id="artistFilter" name="artist">
+    <option value="">All</option>
+    <!-- Artists will be populated here -->
+  </select>
+</div>
+
+  <div class="form-group">
+    <label for="likesFilter">Likes:</label>
+    <select class="form-control" id="likesFilter" name="likes">
+      <option value="">All</option>
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="songFilter">Song Alphabetically:</label>
+    <select class="form-control" id="songFilter" name="song">
+      <option value="">Sort by Name</option>
+      <option value="asc">A-Z</option>
+      <option value="desc">Z-A</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<script>
+document.getElementById('filterForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  const genre = document.getElementById('genreFilter').value;
+  const artist = document.getElementById('artistFilter').value;
+  const likes = document.getElementById('likesFilter').value;
+  const song = document.getElementById('songFilter').value;
+
+  console.log('Filter values:', { genre, artist, likes, song });
+
+  // Fetch filtered records and update the displayed records
+  console.log(`/filteredRecords?genre=${genre}&artist=${artist}&likes=${likes}&song=${song}`)
+  fetch(`/filteredRecords?genre=${genre}&artist=${artist}&likes=${likes}&song=${song}`)
+    .then(response => response.json())
+    .then(filteredRecords => {
+      console.log('Filtered records:', filteredRecords);
+      updateDisplayedRecords(filteredRecords);
+    });
+});
+
+</script>
+

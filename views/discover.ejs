@@ -1,0 +1,99 @@
+<!-- Songcard ejs file -->
+<%- include('header') %>
+<%- include('navbar') %>
+
+
+<!--Heading of page-->
+<div class="container mt-5 song-cards">
+  <!--Intro for the page-->
+  <div class="row">
+    <div class="col-12">
+      <h1>Discover</h1>
+      <p>Browse your favourite records and add them to your collection</p>
+    </div>
+  </div>
+
+  <!--Add in filter-->
+  <%- include('filter') %>
+
+  
+  <!--Song Cards-->
+  <div class="row">
+    <% record.forEach((record, index) => { %>
+        <!-- userdata object to the songcard.ejs template when you include it in the discover.ejs file.-->
+
+        <%- include('songcard', { record: record, isAuthenticated: isAuthenticated, userdata: userdata }); %>
+        <% }); %>
+  </div>
+
+  <% if (!isAuthenticated) { %>
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <p>Only 5 records are shown.</p>
+        <a href="/login" class="btn btn-outline-primary mr-2">Signin</a>
+        <a href="/register" class="btn btn-primary">Join Us</a>
+      </div>
+    </div>
+  <% } %>
+  
+  
+
+
+<!--script to handle like button being added -->
+
+<script>
+  function updateDisplayedRecords(filteredRecords) {
+    const recordContainer = document.querySelector('.song-cards .row');
+    recordContainer.innerHTML = '';
+
+    filteredRecords.forEach(record => {
+      // userdata object to the songcard.ejs template when you include it in the discover.ejs file.
+      const songCard = `<%- include('songcard', { record: record, isAuthenticated: isAuthenticated, userdata: userdata }); %>`;
+      recordContainer.innerHTML += songCard;
+    });
+  }
+
+  document.querySelectorAll('.like-btn').forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const form = event.target.parentElement.querySelector('.like-form');
+      form.submit();
+    });
+  });
+
+ // <!--Add the script for populating the dropdowns here-->
+  // Fetch genres and artists and populate dropdowns
+  function populateDropdowns() {
+    fetch('/genres')
+      .then(response => response.json())
+      .then(genres => {
+        const genreSelect = document.getElementById('genreFilter');
+        genres.forEach(genre => {
+          const option = document.createElement('option');
+          option.value = genre.genre_id;
+          option.textContent = genre.genre_title;
+          genreSelect.appendChild(option);
+        });
+      });
+
+    fetch('/artists')
+      .then(response => response.json())
+      .then(artists => {
+        const artistSelect = document.getElementById('artistFilter');
+        artists.forEach(artist => {
+          const option = document.createElement('option');
+          option.value = artist.artist_id;
+          option.textContent = artist.artist_name;
+          artistSelect.appendChild(option);
+        });
+      });
+  }
+
+  // Call the populateDropdowns function when the page loads
+  populateDropdowns();
+</script>
+
+<!--Bottom bar-->
+<%- include('bottombar') %>
+
+

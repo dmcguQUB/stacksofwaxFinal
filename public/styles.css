@@ -1,0 +1,272 @@
+
+      @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700&display=swap');
+
+     
+      
+
+      :root {
+        --primary1: #9b85e6;
+        --dark: #011910;
+        --body: #484D46;
+        --secondary: white;
+        --box-shadow: 0 8px 22px rgba(0, 0, 0, 0.01);
+      }
+
+      body {
+        font-family: Sora, "sans-serif";
+        line-height: 1.7;
+        color: var(--body);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .display-4 {
+        color: var(--dark);
+        font-weight: 700;
+      }
+
+      a {
+        color: var(--dark);
+        text-decoration: none;
+      }
+
+     .hero,.main-content {
+        background-image: url(https://images.unsplash.com/photo-1619252584172-a83a949b6efd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80);
+        background-position: 50% 65%;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(29, 21, 33, 0.567);
+        z-index: -1;
+      }
+
+      .navbar {
+        box-shadow: var(--box-shadow);
+      }
+
+      .navbar .nav-link {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .btn {
+        padding: 14px 18px;
+        border-width: 2px;
+        border-radius: 0;
+        background-color: var(--primary1);
+        color: var(--dark);
+        border-color: var(--dark);
+        transition: all 0.35s ease;
+      }
+
+      .btn-outline-primary {
+        background-color: transparent;
+        color: var(--primary1);
+        border-color:var(--primary1);
+      }
+
+      .btn:hover,
+      .btn-outline-primary:hover {
+        background-color: white;
+        color:var(--dark);
+        border-color: var(--primary1);
+        box-shadow: none;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-primary:hover {
+        color: var(--dark);
+      }
+
+      section {
+        padding-top: 120px;
+        padding-bottom: 120px;
+      }
+
+      .card-effect {
+        box-shadow: var(--box-shadow);
+        background-color: #fff;
+        padding: 25px;
+        transform: all 0.35s ease;
+      }
+
+      .card-effect:hover {
+        box-shadow: none;
+        transform: translateY(5px);
+      }
+
+      .iconbox {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary1);
+        color: #fff;
+        font-size: 32px;
+        border-radius: 100px;
+      }
+
+      .card-effect {
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        padding: 25px;
+        border: 2px solid rgba(0, 0, 0, 0.2); /* Add black box outline */
+        transition: all 0.35s ease;
+      }
+      
+      .card-effect:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Reduce drop shadow on hover */
+        transform: translateY(-2px); /* Slight upward movement on hover */
+      }
+      
+ 
+
+      .login-bg {
+        background-image: url(https://images.unsplash.com/photo-1597589827307-d393da1520d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2856&q=80);
+        background-position: 50% 65%;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        z-index: 2;
+      }
+
+  
+
+      .form-container{border:1px solid var(--primary1);padding: 50px 60px; margin-top: 20vh;
+        -webkit-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+-moz-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+      }
+
+      .btn-block {
+        display: block !important;
+        width: 100%;
+      }
+
+      .login-title{
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+      }
+
+      .form-group label, .form-control, .form-check-label {
+        color: white;
+      }
+
+      .registerbutton{
+        margin-top: 20px;
+      }
+
+      
+      /** editing the song cards css*/
+ .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px 20px 0; /* Add margin between cards */
+
+
+}
+
+.card-img-container {
+  flex: 0 0 70%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card .card-footer {
+  margin-top: auto;
+}
+/*add margin between song cards*/
+.song-cards .row{
+
+margin-bottom: 20px;
+}
+
+/** this is to change the account summary box colour */
+.card-effect {
+  box-shadow: var(--box-shadow);
+  background-color: var(--primary1); /* primary color */
+  padding: 25px;
+  transform: all 0.35s ease;
+  color: white;
+  -webkit-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+  -moz-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+  box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+}
+/** this is to change the account summary box colour when hoovering */
+
+.card-effect:hover {
+  box-shadow: none;
+  background-color: var(--secondary); /* secondary color on hover */
+  transform: translateY(5px);
+  color: black;
+
+}
+
+/* background for the discovery page */
+.discover-background {
+  background-image: url("https://images.unsplash.com/photo-1619252584172-a83a949b6efd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* make sure the dropdown menu is always visble for the navbar on every page*/
+.dropdown-menu {
+  z-index: 9999;
+}
+
+/* ensure that the review cards have normal height*/
+.review-card {
+  height: auto; /* Remove the height property */
+}
+
+/* changing colour and size of nav bart*/
+
+.navbar-brand {
+  font-size: 35px; 
+  display: flex;
+
+  align-items: center;
+}
+i.fa-solid {
+  color: var(--primary1);
+  font-size: 35px; /* Adjust this value to make the vinyl logo larger or smaller */
+  margin-left: 5px; /* Add some space between the text and the vinyl logo */
+}
