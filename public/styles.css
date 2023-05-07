@@ -35,7 +35,7 @@
       }
 
      .hero,.main-content {
-        background-image: url(https://images.unsplash.com/photo-1619252584172-a83a949b6efd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80);
+        background-image: url(https://images.unsplash.com/photo-1597589827307-d393da1520d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2856&q=80);
         background-position: 50% 65%;
         background-size: cover;
         background-attachment: fixed;
@@ -146,12 +146,16 @@
       }
 
   
-
-      .form-container{border:1px solid var(--primary1);padding: 50px 60px; margin-top: 20vh;
+/*Login and register form border */
+      .form-container{border:1px solid var(--primary1);padding: 50px 60px; 
         -webkit-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
 -moz-box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
 box-shadow: -18px 13px 77px -11px rgba(0,3,2,1);
+margin-top: 20vh;
+margin-bottom: 20vh;
       }
+
+
 
       .btn-block {
         display: block !important;
@@ -270,3 +274,62 @@ i.fa-solid {
   font-size: 35px; /* Adjust this value to make the vinyl logo larger or smaller */
   margin-left: 5px; /* Add some space between the text and the vinyl logo */
 }
+
+
+/* add CSS to the filter and Search form on the discover page*/
+.discover-filter-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.discover-filter-button {
+  padding: 6px 12px;
+  border-width: 2px;
+  border-radius: 0;
+  background-color: var(--primary1);
+  color: var(--dark);
+  border-color: var(--dark);
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+
+.discover-filter-button:hover {
+  background-color: white;
+  color: var(--dark);
+  border-color: var(--primary1);
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+/*CSS added to make sure all images for records within song vards are the same size*/
+.card-img-container {
+  flex: 0 0 70%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  height: 200px; /* Set a fixed height for the image container */
+}
+
+.card-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover will scale the image to fill the container while maintaining aspect ratio */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*change colour of form text for login and register*//* Register form input color */
+.form-control {
+  color: black;
+}
+
+/*add space to the register and login submit buttons */
+
+.btn.btn-outline-success.btn-block.login-register-button{
+margin-top: 20px;
+}
+
+

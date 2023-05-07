@@ -23,11 +23,6 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/discover">Discover</a>
-        </li>
-
-        <% if (isAuthenticated) { %>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -36,37 +31,32 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Your Library
+            Discover
           </a>
           <ul class="dropdown-menu">
             <!--need to change this to match which songs they have liked-->
-            <li><a class="dropdown-item" href="/discover">Liked Songs</a></li>
-            <li><a class="dropdown-item" href="#">Playlists</a></li>
-            <li><a class="dropdown-item" href="#">Artists</a></li>
-            <li><a class="dropdown-item" href="#">Albums</a></li>
+            <li><a class="dropdown-item" href="/discover">New Music</a></li>
+            <% if (isAuthenticated) { %> 
+              <li><a class="dropdown-item" href="/myplaylist">My Playlist</a></li>
+            <li><a class="dropdown-item" href="/collections">Collections</a></li>
             <li><hr class="dropdown-divider" /></li>
+           
             <!-- add refernece to account page -->
             <li>
               <a class="dropdown-item" href="/account">Your Account</a>
             </li>
+
+            <% } %>
+
           </ul>
         </li>
-        <% } %>
 
+
+       
         <li class="nav-item">
           <a class="nav-link" href="/pricing">Pricing</a>
         </li>
       </ul>
-      <form class="d-flex" action="/search" method="get">
-        <input
-          class="form-control me-2"
-          type="search"
-          name="q"
-          placeholder="Search"
-          aria-label="Search"
-          onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }"
-        />
-      </form>
       <ul class="navbar-nav">
         <% if (!isAuthenticated) { %> <!-- Only show the login and register buttons if the user is not authenticated -->
           <li class="nav-item">

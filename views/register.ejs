@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="login-bg">
-    <div class="form-container container-fluid">
+<%- include('navbar') %>
+    <div class="form-container container-fluid login-register-form">
       <h1 class="login-title">Register Form</h1>
       <% if (errorMessage) { %>
       <div class="alert alert-danger"><%= errorMessage %></div>
@@ -79,7 +80,7 @@
                 name="passwordConfirm"
               />
             </div>
-            <button type="submit" class="btn btn-outline-success btn-block">
+            <button type="submit" class="btn btn-outline-success btn-block login-register-button">
               Register
             </button>
           </form>

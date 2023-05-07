@@ -1,0 +1,30 @@
+<%- include('header') %>
+<%- include('navbar') %>
+
+<div class="container mt-5 song-cards">
+  <div class="row">
+    <div class="col-12">
+      <h1>User Collection</h1>
+      <p>View the selected user's collection</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <% for (var i = 0; i < records.length; i++) { %>
+      <div class="col-lg-3">
+        <div class="card mb-4 shadow-sm">
+          <img src="<%= records[i].record_image_url %>" alt="Record Image" />
+          <div class="card-body">
+            <h5 class="card-title"><%= records[i].record_title %></h5>
+            <p class="card-text">Artists: <%= records[i].artist_names %></p>
+            <p class="card-text">Genres: <%= records[i].genre_titles %></p>
+            <p class="text-muted">This is another user's collection</p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('bottombar') %>
+

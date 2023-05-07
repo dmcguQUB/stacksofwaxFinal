@@ -1,11 +1,7 @@
-<!-- Songcard ejs file -->
 <%- include('header') %>
 <%- include('navbar') %>
 
-
-<!--Heading of page-->
 <div class="container mt-5 song-cards">
-  <!--Intro for the page-->
   <div class="row">
     <div class="col-12">
       <h1>Discover</h1>
@@ -13,87 +9,133 @@
     </div>
   </div>
 
-  <!--Add in filter-->
-  <%- include('filter') %>
-
-  
-  <!--Song Cards-->
+  <!--Filter and Search form row-->
   <div class="row">
-    <% record.forEach((record, index) => { %>
-        <!-- userdata object to the songcard.ejs template when you include it in the discover.ejs file.-->
+    <!--Genre filter-->
+    <div class="col-md-4 col-sm-12">
+      <form class="discover-filter-form" method="get" action="/discover">
+        <div class="input-group">
+          <label class="input-group-text" for="genre">Genre:</label>
+          <select class="form-select" id="genre" name="genre">
+            <option value="">Select Genre</option>
+          </select>
+          <button class="btn btn-primary" type="submit">Filter</button>
+        </div>
+      </form>
+    </div>
 
-        <%- include('songcard', { record: record, isAuthenticated: isAuthenticated, userdata: userdata }); %>
-        <% }); %>
+    <!--Artist search filter-->
+    <div class="col-md-8 col-sm-12">
+      <form class="discover-search-form" method="get" action="/discover">
+        <div class="input-group">
+          <label class="input-group-text" for="artist">Artist:</label>
+          <input class="form-control" id="artist" type="text" name="artist" placeholder="Search by artist">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <% if (!isAuthenticated) { %>
-    <div class="row mt-3">
-      <div class="col-12 text-center">
-        <p>Only 5 records are shown.</p>
-        <a href="/login" class="btn btn-outline-primary mr-2">Signin</a>
-        <a href="/register" class="btn btn-primary">Join Us</a>
+
+
+  
+<!--record card-->
+<div class="row">
+  <% for (var i = 0; i < record.length && i < (isAuthenticated ? record.length : 5); i++) { %>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <img src="<%= record[i].record_image_url %>" alt="Record Image" />
+        <div class="card-body">
+          <h5 class="card-title"><%= record[i].record_title %></h5>
+          <p class="card-text">Artist: <%= record[i].artist_name %></p>
+          <p class="card-text">Genres: <%= record[i].genre_title %></p>
+
+          <% if (isAuthenticated) { %>
+            <% const record_id = record[i].record_id; %>
+            <% const addedRecords = record.filter(r => r.added === true); %>
+            <% const isAdded = addedRecords.find(r => r.record_id === record_id) !== undefined; %>
+
+            <% if (!isAdded) { %>
+              <form class="add-to-playlist-form" method="post" action="/add-to-playlist">
+                <input type="hidden" name="record_id" value="<%= record_id %>">
+                <button class="btn btn-primary btn-sm" type="submit">Add to Playlist</button>
+              </form>
+            <% } %>
+          <% } else { %>
+            <p class="text-danger">Please <a href="/login">log in</a> or <a href="/register">register</a> to add records to your playlist.</p>
+          <% } %>
+        </div>
       </div>
     </div>
   <% } %>
-  
-  
+</div>
 
 
-<!--script to handle like button being added -->
+<!-- Warning message of limited searches if not logged in -->
+<div class="row mt-4">
+  <div class="col-12">
+    <% if (!isAuthenticated) { %>
+      <div class="alert alert-warning" role="alert">
+        Searches are limited to 5 per page. Please <a href="/login">log in</a> or <a href="/register">register</a> to view more results.
+      </div>
+    <% } %>
+  </div>
+</div>
+
 
 <script>
-  function updateDisplayedRecords(filteredRecords) {
-    const recordContainer = document.querySelector('.song-cards .row');
-    recordContainer.innerHTML = '';
-
-    filteredRecords.forEach(record => {
-      // userdata object to the songcard.ejs template when you include it in the discover.ejs file.
-      const songCard = `<%- include('songcard', { record: record, isAuthenticated: isAuthenticated, userdata: userdata }); %>`;
-      recordContainer.innerHTML += songCard;
-    });
-  }
-
-  document.querySelectorAll('.like-btn').forEach((btn) => {
-    btn.addEventListener('click', (event) => {
-      event.preventDefault();
-      const form = event.target.parentElement.querySelector('.like-form');
-      form.submit();
-    });
-  });
-
- // <!--Add the script for populating the dropdowns here-->
-  // Fetch genres and artists and populate dropdowns
-  function populateDropdowns() {
+  // Fetch genres and populate the genre dropdown
+  function populateGenreDropdown() {
     fetch('/genres')
       .then(response => response.json())
       .then(genres => {
-        const genreSelect = document.getElementById('genreFilter');
+        const genreSelect = document.getElementById('genre');
         genres.forEach(genre => {
           const option = document.createElement('option');
-          option.value = genre.genre_id;
+          option.value = genre.genre_title;
           option.textContent = genre.genre_title;
           genreSelect.appendChild(option);
         });
       });
+  }
+  function handleAddToPlaylistForm(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
 
-    fetch('/artists')
-      .then(response => response.json())
-      .then(artists => {
-        const artistSelect = document.getElementById('artistFilter');
-        artists.forEach(artist => {
-          const option = document.createElement('option');
-          option.value = artist.artist_id;
-          option.textContent = artist.artist_name;
-          artistSelect.appendChild(option);
-        });
-      });
+  console.log('Form:', form);
+  console.log('Form action:', form.action);
+
+  // Debugging: Log the formData entries
+  for (let entry of formData.entries()) {
+    console.log(entry[0], ':', entry[1]);
   }
 
-  // Call the populateDropdowns function when the page loads
-  populateDropdowns();
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(response => {
+    console.log('Response status:', response.status);
+    console.log('Response status text:', response.statusText);
+    response.json().then(data => {
+      console.log('Response data:', data);
+    }).catch(err => {
+      console.log('Error parsing response JSON:', err);
+    });
+
+    if (response.ok) {
+      location.reload();
+    } else {
+      console.error('Error in adding to playlist');
+    }
+  });
+}
+
+  // Call the populateGenreDropdown function when the page loads
+  populateGenreDropdown();
 </script>
 
-<!--Bottom bar-->
 <%- include('bottombar') %>
-
-
