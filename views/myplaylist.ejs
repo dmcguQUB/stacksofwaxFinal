@@ -1,36 +1,53 @@
-<!--my playlist.ejs-->
-<%- include('header') %>
-<%- include('navbar') %>
+<!--my playlist.ejs. This page is where user's who have added records to their playlists are stored.-->
 
+<!--include Header and Navbar-->
+<%- include('header', {bodyClass: ''}) %> <%- include('navbar') %>
+
+<!-- Container for song cards (also interchangeable known as record card) -->
 <div class="container mt-5 song-cards">
   <div class="row">
     <div class="col-12">
+      <!--header for playlist-->
       <h1>My Playlist</h1>
       <p>View your favorite records added to your collection</p>
     </div>
   </div>
 
+  <!-- Iterate through records in the user's playlist that they have added from the discovery page -->
   <div class="row">
     <% for (var i = 0; i < record.length; i++) { %>
-      <div class="col-lg-3">
-        <div class="card mb-4 shadow-sm">
-          <img src="<%= record[i].record_image_url %>" alt="Record Image" />
-          <div class="card-body">
-            <h5 class="card-title"><%= record[i].record_title %></h5>
-            <p class="card-text">Artist: <%= record[i].artist_name %></p>
-            <p class="card-text">Genres: <%= record[i].genre_title %></p>
+    <div class="col-lg-3">
+      <!-- Show details for each record including record title, artist and genres  -->
 
-            <form class="remove-from-playlist-form" method="post" action="/remove-from-playlist">
-              <input type="hidden" name="record_id" value="<%= record[i].record_id %>">
-              <button class="btn btn-danger btn-sm" type="submit">Remove from Playlist</button>
-            </form>
-          </div>
+      <div class="card mb-4 shadow-sm">
+        <img src="<%= record[i].record_image_url %>" alt="Record Image" />
+        <div class="card-body">
+          <h5 class="card-title"><%= record[i].record_title %></h5>
+          <p class="card-text">Artist: <%= record[i].artist_name %></p>
+          <p class="card-text">Genres: <%= record[i].genre_title %></p>
+
+          <!-- Form to remove a record from the playlist. This causes a post of remove-from-playlist route to remove the record from the playlist -->
+          <form
+            class="remove-from-playlist-form"
+            method="post"
+            action="/remove-from-playlist"
+          >
+            <input
+              type="hidden"
+              name="record_id"
+              value="<%= record[i].record_id %>"
+            />
+            <button class="btn btn-danger btn-sm" type="submit">
+              Remove from Playlist
+            </button>
+          </form>
         </div>
       </div>
+    </div>
     <% } %>
   </div>
-
 </div>
 
+<!--Bottom bar-->
 <%- include('bottombar') %>
 <!--my playlist.ejs-->

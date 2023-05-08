@@ -1,24 +1,27 @@
-
-<%- include('header') %>
+<!--Terms and conditions ejs file to give details on the TC's for the website. This is just a simple static website-->
+<!--Header and Navbar template derivatives in the EJS template for this page. These are rendered in conjunction with current ejs template. -->
+<%- include('header', {bodyClass: ''}) %>
 <%- include('navbar') %>
 
+<!--T&C's container-->
 <div class="container my-5">
   <div class="row">
     <div class="col-md-8 mx-auto">
-      <h1 class="text-center mb-4">Terms and Conditions</h1>
+      <h1 class="text-center mb-4">Terms and Conditions</h1> <!--title for TC's-->
       <p>
         By using Stacks of Wax, you agree to the following terms and conditions:
       </p>
+      <!--List of TC's-->
       <ul>
         <li>Stacks of Wax is for personal, non-commercial use only. You may not use our platform for commercial purposes without our prior written consent.</li>
         <li>You must be at least 13 years old to use Stacks of Wax.</li>
         <li>You are responsible for maintaining the security of your account login information.</li>
         <li>We reserve the right to terminate or suspend your account if we suspect any unauthorized use or if you violate our terms and conditions.</li>
-        <li>Our platform may contain links to third-party websites, which we do not endorse or control. We are not responsible for the content or privacy policies of these websites.</li>
         <li>We may modify these terms and conditions at any time. Your continued use of Stacks of Wax after such modifications will constitute your agreement to the modified terms.</li>
       </ul>
     </div>
   </div>
 </div>
 
+<!--Bottom bar template derivative in the EJS template for this page. This is rendered in conjunction with current ejs template. -->
 <%- include('bottombar'); %>

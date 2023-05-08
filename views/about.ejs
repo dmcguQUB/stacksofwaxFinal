@@ -1,21 +1,23 @@
-<%- include('header'); %>
+<!--About page with summary information regarding stacks of wax website-->
+
+<!--Header and Navbar template derivatives in the EJS template for this page. These are rendered in conjunction with current ejs template. -->
+<%- include('header', {bodyClass: ''}) %>
 <%- include('navbar') %>
 
-<div class="container my-5">
+<!-- This is an HTML code block that defines information regarding the stacks of wax website. -->
+<div class="container my-5"> <!--bootstrap 5 container-->
   <div class="row">
-    <div class="col-md-8 mx-auto">
-      <h1 class="text-center mb-4">About Stacks of Wax</h1>
+    <div class="col-md-8 mx-auto"> <!--Create column with width of 8 /12 centres horizontally-->
+      <h1 class="text-center mb-4">About Stacks of Wax</h1> <!--centralised text-->
       <p>
-        Stacks of Wax is a music streaming platform that provides access to millions of songs across different genres. Our mission is to make music accessible to everyone, everywhere.
+        StacksOfWax is a vinyl collection music page which allows uses to browse vinyls across different genres. We want to make a shareable platform for users to share their favourite vinyls.
       </p>
       <p>
-        We offer a range of features, including personalized playlists, recommendations, and the ability to create your own playlists. Our platform is available on multiple devices, including mobile, desktop, and smart speakers.
-      </p>
-      <p>
-        We are constantly working to improve our platform and add new features to enhance the user experience. Thank you for choosing Stacks of Wax as your music streaming destination.
+        We offer a range of features including browse vinyls, personalised playlists and collections of other users which you can browse.
       </p>
     </div>
   </div>
 </div>
 
+<!--Bottom bar template derivative in the EJS template for this page. This is rendered in conjunction with current ejs template. -->
 <%- include('bottombar'); %>

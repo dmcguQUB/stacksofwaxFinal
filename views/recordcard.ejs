@@ -1,0 +1,58 @@
+    <!--record card-->
+    <!--Row creates container for the record card-->
+    <div class="row">
+      <!--For loop which iterates through the record array. If not Authenticated, then records limited to 5 per page-->
+      <% for (var i = 0; i < record.length && i < (isAuthenticated ?
+      record.length : 5); i++) { %>
+        <!--creates responsive column using bootstrap with a margin of 4-->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <!--Create card container with a height 100% of card height-->
+        <div class="card h-100">
+          <!--Image of record using URL provided-->
+          <img src="<%= record[i].record_image_url %>" alt="Record Image" />
+          <div class="card-body">
+            <!--Record title as heading for card-->
+            <h5 class="card-title"><%= record[i].record_title %></h5>
+            <!--Artist name displayed-->
+            <p class="card-text">Artist: <%= record[i].artist_name %></p>
+            <!--Record genres provided-->
+            <p class="card-text">Genres: <%= record[i].genre_title %></p>
+
+            <!--Check if user is authenticated-->
+            <% if (isAuthenticated) { %> 
+              <!--gets record id of record-->
+            <% const record_id = record[i].record_id; %> 
+            <!--addedRecords - Filters records already in the user's playlist. It does this by searching the record array for those that have property .added set totrue-->
+            <% const addedRecords = record.filter(r => r.added === true); %> 
+            <!--isAdded - Checks if the current record is in the user's playlist. Checks if the current record_id exists within the array of newly created array that are in the users playlist. If it is not present it will return undefined. this means isAdded will return true or false depending if its within the user's playlist-->
+            <% const isAdded = addedRecords.find(r =>r.record_id === record_id) !== undefined; %>
+           
+           <!--Add to playlist button-->
+           <!--if the record hasn't already been added to their playlist then display button to add to playlist calling /add-to-playlist post route to server -->
+            <% if (!isAdded) { %>
+              <!--start of form-->
+            <form
+              class="add-to-playlist-form"
+              method="post"
+              action="/add-to-playlist"
+            >
+              <input type="hidden" name="record_id" value="<%= record_id %>" />
+              <button class="btn btn-primary btn-sm" type="submit">
+                Add to Playlist
+              </button>
+            </form>
+            <!--end fo form-->
+            <% } %> 
+            <!--ends the check for whether the record has not been added to the user's playlist.-->
+            <!--if user is not authenticated ask them to sign in or register an account-->
+            <% } else { %>
+            <p class="text-danger">
+              Please <a href="/login">log in</a> or
+              <a href="/register">register</a> to add records to your playlist.
+            </p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>

@@ -109,17 +109,19 @@
         transform: translateY(5px);
       }
 
+       /*CSS for services on Index.js */
       .iconbox {
         width: 54px;
         height: 54px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--primary1);
-        color: #fff;
+        background-color: white;
+        color: var(--primary1);
         font-size: 32px;
         border-radius: 100px;
+        display: flex;          /*Helps center the icons */
+        justify-content: center;  /*Helps center the icons */
+        align-items: center;     /*Helps center the icons */
       }
+      
 
       .card-effect {
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
@@ -333,3 +335,13 @@ margin-top: 20px;
 }
 
 
+/*pricing and account page - pricing and account container increase margin from bottom bar and navbar*/
+#pricing-table,#account-container {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+/*Discovery filter buttons. Add margin to add space betweeen record cards and filters */
+.artist-genre-filter{
+  margin-bottom: 20px;
+}

@@ -1,31 +1,56 @@
-<%- include('header') %>
-<%- include('navbar') %>
+<!--Contact Us EJS file for a user to submit contact us information. This is a static website with the post route yet to be developed or to be stored in the database-->
+<!--Header and Navbar template derivatives in the EJS template for this page. These are rendered in conjunction with current ejs template. -->
+<%- include('header', {bodyClass: ''}) %> <%- include('navbar') %>
 
+<!--Container for the contact us form -->
 <main class="container my-5">
   <h1>Contact Us</h1>
   <p>For any inquiries or feedback, please fill out the form below:</p>
 
-  <form action="/contact" method="POST">
+  <!--This is the HTML element which has the action (e.g. which route to execute) with the method POST however this has not been developed yet but could in later iterations-->
+  <form action="" method="POST">
+    <!--first element the user must fill out. Text has name in form. Included requried attribute to make sure a user enters this information before submitting-->
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="name" name="name" required>
+      <input type="text" class="form-control" id="name" name="name" required />
     </div>
+    <!--email required-->
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+      />
     </div>
+    <!--subject info-->
     <div class="mb-3">
       <label for="subject" class="form-label">Subject</label>
-      <input type="text" class="form-control" id="subject" name="subject" required>
+      <input
+        type="text"
+        class="form-control"
+        id="subject"
+        name="subject"
+        required
+      />
     </div>
+    <!--Messgae containing info. Text area is used here as it allows the user to have multiline text input which would be needed for a contact us form-->
     <div class="mb-3">
       <label for="message" class="form-label">Message</label>
-      <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+      <textarea
+        class="form-control"
+        id="message"
+        name="message"
+        rows="5"
+        required
+      ></textarea>
     </div>
+
+    <!--submit button-->
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-
 </main>
-
+<!--Bottom bar template derivative in the EJS template for this page. This is rendered in conjunction with current ejs template. -->
 <%- include('bottombar') %>
-

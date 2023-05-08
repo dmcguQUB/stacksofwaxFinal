@@ -1,57 +1,64 @@
-<%- include('header') %>
-<%- include('navbar') %>
+<!--Header and Navbar template derivatives in the EJS template for this page. These are rendered in conjunction with current ejs template. -->
+<%- include('header', {bodyClass: ''}) %> <%- include('navbar') %>
 
-<div class="container">
+<!--Account container to display user information dynamically with First Name, Last Name, Email and Number of songs added to their playlist-->
+<div class="container" id="account-container"> <!--adding id to target with CSS for this container-->
   <div class="row mt-4">
     <div class="col-lg-6 mx-auto">
       <div class="card card-effect">
         <div class="card-body">
+
+          <!--Account Title-->
           <h4 class="card-title mb-4 text-center">Account Summary</h4>
+
+          <!--First name info-->
           <div class="row">
             <div class="col-6">
               <p class="fw-bold text-center">First Name:</p>
             </div>
             <div class="col-6">
+              <!--First name passed from serverside through object userdetails-->
               <p class="text-center"><%= userDetails.first_name %></p>
             </div>
           </div>
+
+          <!--Last name info-->
           <div class="row">
             <div class="col-6">
               <p class="fw-bold text-center">Last Name:</p>
             </div>
             <div class="col-6">
+              <!--Last Name passed from serverside through object userdetails-->
               <p class="text-center"><%= userDetails.last_name %></p>
             </div>
           </div>
+
+          <!--email info-->
           <div class="row">
             <div class="col-6">
               <p class="fw-bold text-center">Email:</p>
             </div>
             <div class="col-6">
+              <!--email passed from serverside through object userdetails-->
               <p class="text-center"><%= userDetails.email %></p>
             </div>
           </div>
+
+          <!--Number of records in playlist-->
           <div class="row">
             <div class="col-6">
-              <p class="fw-bold text-center">Number of Liked Songs:</p>
+              <p class="fw-bold text-center">No. of Records in Playlist:</p>
             </div>
             <div class="col-6">
+              <!--Number of records within playlist from serverside through object userdetails. This uses a count SQL function.-->
               <p class="text-center"><%= userDetails.number_of_songs %></p>
             </div>
-          </div>          
-        </div> <!--here-->
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-
-<!-- Bootstrap JS -->
-<script
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-integrity="sha384-L2wuG01qaUBWtJwMy3q3a2c/cJ8r1Wk/bvKRVtwlbeJLGImR8ePnT+57dokJUXCt"
-crossorigin="anonymous"
-></script>
-
-<!--Bottom bar-->
+<!--Bottom bar template derivative in the EJS template for this page. This is rendered in conjunction with current ejs template. -->
 <%- include('bottombar') %>

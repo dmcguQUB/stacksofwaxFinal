@@ -1,29 +1,39 @@
-<%- include('header') %>
+<!--Header and Navbar template derivatives in the EJS template for this page. These are rendered in conjunction with current ejs template. -->
+<%- include('header', {bodyClass: ''}) %>
 <%- include('navbar') %>
+
+<!--container to hold FAQ's-->
 <div class="container">
 <h1>FAQs</h1>
+<!--using bootstrap accordion component to style the FAQ. Question in bold and answers beneath. QA and held within an accordion item-->
 <div class="accordion">
+ 
+  <!--Question 1-->
 <div class="accordion-item">
 <div class="accordion-header"><strong>What is StacksOfWax?</strong></div>
-<div class="accordion-content">StacksOfWax is a music streaming service that allows you to discover, listen to, and share your favorite music.</div>
+<div class="accordion-content">StacksOfWax is a vinyl collection music page which allows uses to browse vinyls across different genres. We want to make a shareable platform for users to share their favourite vinyls.
 </div>
+</div>
+
+<!--Question 2-->
 <div class="accordion-item">
 <div class="accordion-header"><strong>How do I sign up for StacksOfWax?</strong></div>
-<div class="accordion-content">You can sign up for StacksOfWax by clicking the "Join Us" button on the navigation bar and following the on-screen instructions.</div>
+<div class="accordion-content">You can sign up for StacksOfWax by clicking the "Join Us" button on the navigation bar.</div>
 </div>
+
+<!--Question 3-->
 <div class="accordion-item">
 <div class="accordion-header"><strong>How much does StacksOfWax cost?</strong></div>
-<div class="accordion-content">StacksOfWax offers both free and premium subscription options. The premium subscription costs $9.99 per month.</div>
+<div class="accordion-content">Free to register and start creating collections. Upgrading account to premium will cost money will more information in pricing.</div>
 </div>
-<div class="accordion-item">
-<div class="accordion-header"><strong>Can I cancel my subscription?</strong></div>
-<div class="accordion-content">Yes, you can cancel your subscription at any time by visiting your account settings.</div>
-</div>
+
+<!--Question 4-->
 <div class="accordion-item">
 <div class="accordion-header"><strong>How do I contact StacksOfWax customer support?</strong></div>
-<div class="accordion-content">You can contact StacksOfWax customer support by emailing support@stacksofwax.com or by filling out the contact form on our website.</div>
+<div class="accordion-content">Please fill in contact form in bottom right of screen..</div>
 </div>
 </div>
 </div>
-<script src="script.js"></script>
+
+<!--Bottom bar template derivative in the EJS template for this page. This is rendered in conjunction with current ejs template. -->
 <%- include('bottombar') %>

@@ -7,7 +7,7 @@ const express = require("express"); // import Express framework
 const cookieParser = require("cookie-parser"); // import cookie-parser middleware
 //express-session: A middleware for creating sessions for users. We use app.use(sessions({ ... })) to configure session handling.
 /* Yes, in your example the session information is stored locally in the server's memory, rather than being stored in a database. This is achieved using the express-session middleware, which provides an easy way to manage session data in Node.js applications. The session data is stored in memory by default, but you can configure express-session to use other storage options such as databases, if required.
-*/
+ */
 const sessions = require("express-session"); // import express-session middleware
 let app = express(); // create an instance of Express
 //path: A Node.js module for working with file and directory paths.
@@ -50,64 +50,14 @@ function checkAuthenticated(req, res, next) {
   res.redirect("/login"); // if not autheticated then redirected to login
 }
 
-/*
-This is a function to filter vinyl records in a database based on genre and artist. 
-*/
-function getFilteredRecords(genre, artist) {
-  let queryConditions = []; // define an empty array called queryConditions
-  let values = []; // define an empty array called values
-
-  //SQL query for the database which will get necessary data from record, artist and genre tables within stacksofwax database
-  let baseQuery = `
-    SELECT 
-      record.record_title, 
-      record.record_image_url, 
-      record.record_duration, 
-      artist.artist_name, 
-      genre.genre_title
-    FROM 
-      artist 
-      JOIN record_artist ON artist.artist_id = record_artist.artist_id 
-      JOIN record ON record.record_id = record_artist.record_id 
-      JOIN record_genre ON record_genre.record_id = record.record_id 
-      JOIN genre ON genre.genre_id = record_genre.genre_id
-  `;
-
-  //check if genre parameters are provided. If they are adds WHERE clause to the queryconditions array and the parameter to the values array
-  if (genre) {
-    queryConditions.push("genre.genre_id LIKE ?");
-    values.push(`%${genre}%`);
-  }
-  //check if artist parameters are provided. If they are adds WHERE clause to the queryconditions array and the parameter to the values array
-  if (artist) {
-    queryConditions.push("artist.artist_id LIKE ?");
-    values.push(`%${artist}%`);
-  }
-//Essentially, this adds a WHERE clause to the SQL query built in baseQuery only if there are query conditions to be applied.
-  if (queryConditions.length > 0) {
-    baseQuery += " WHERE " + queryConditions.join(" AND ");
-  }
-
-  // Finally, it returns a Promise object that queries the database using the modified SQL query and parameter values. If the query is successful, it resolves with the resulting rows, and if it fails, it rejects with an error.
-  return new Promise((resolve, reject) => {
-    connection.query(baseQuery, values, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
-
 //import bycrypt library to hash user information stored in database
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10; // increased value here means greater hashing but also slower
 //We also define some constants, including the port number and a time constant for session expiration.
 
 /* Route for homepage. If the user is autheticated (logged in correctly) the code retrieves the use data and then renders the index.ejs file. The code passes the object user data to be viewed on the page. It also converts the autheticated boolean to true
 If user does not sign in (authenticate) then the user is directed to index page but authentification is set to false.
-*/ 
+*/
 app.get("/", function (req, res) {
   if (req.session && req.session.authen) {
     let uid = req.session.authen;
@@ -122,10 +72,8 @@ app.get("/", function (req, res) {
   }
 });
 
-
 // Route for the discover page
 //This defines an Express.js GET route for the "/discover" endpoint. When a client makes a GET request to this endpoint, the callback function passed as the second argument is called.
-
 
 // Route for the discover page
 app.get("/discover", function (req, res) {
@@ -149,57 +97,32 @@ FROM
   JOIN genre ON genre.genre_id = record_genre.genre_id 
 WHERE genre.genre_title LIKE ? AND artist.artist_name LIKE ?;`;
 
-  let values = [`%${genre}%`, `%${artist}%`];
+  // Query to fetch genres
+  let genreSql = "SELECT * FROM genre ORDER BY genre_title ASC";
+  // Query to fetch artists
+  let artistSql = "SELECT * FROM artist ORDER BY artist_name ASC";
 
-  connection.query(sql, values, function (err, rows) {
-    console.log(rows);
-    if (err) throw err;
-    res.render("discover", {
-      record: rows,
-      isAuthenticated: isAuthenticated,
-      userdata: req.user,
-      genre: genre,
-      artist: artist
-    });
-  });
-});
-
-
-
-
-
-
-app.get("/filter", function (req, res) {
-  let genre = req.query.genre || "";
-  let artist = req.query.artist || "";
-
-  let sqlquery = `SELECT 
-    record.record_title, 
-    record.record_image_url, 
-    record.record_duration, 
-    artist.artist_name, 
-    genre.genre_title 
-  FROM 
-    artist 
-    JOIN record_artist ON artist.artist_id = record_artist.artist_id 
-    JOIN record ON record.record_id = record_artist.record_id 
-    JOIN record_genre ON record_genre.record_id = record.record_id 
-    JOIN genre ON genre.genre_id = record_genre.genre_id 
-    WHERE genre.genre_title LIKE ? AND artist.artist_name LIKE ?`;
-  let values = [`%${genre}%`, `%${artist}%`];
-
-  connection.query(sqlquery, values, function (err, rows) {
+  connection.query(sql, [`%${genre}%`, `%${artist}%`], function (err, rows) {
     if (err) throw err;
 
-    // Render the song cards as a string of HTML
-    let renderedCards = '';
-    const songcardTemplate = fs.readFileSync('songcard', 'utf-8');
-    
-    rows.forEach((record) => {
-      renderedCards += ejs.render(songcardTemplate, { record: record, isAuthenticated: isAuthenticated, userdata: userdata });
-    });
+    // Execute the queries in parallel
+    connection.query(genreSql, function (err, genres) {
+      if (err) throw err;
+      connection.query(artistSql, function (err, artists) {
+        if (err) throw err;
 
-    res.send(renderedCards);
+        // Render the discover template with genres and artists
+        res.render("discover", {
+          record: rows,
+          genres: genres,
+          artists: artists,
+          isAuthenticated: isAuthenticated,
+          userdata: req.user,
+          genre: genre,
+          artist: artist,
+        });
+      });
+    });
   });
 });
 
@@ -221,7 +144,7 @@ app.post("/login", (req, res) => {
         bcrypt.compare(password, results[0].password, (err, isMatch) => {
           if (err) {
             console.error(err);
-            return res.status(500).send('Error comparing the passwords');
+            return res.status(500).send("Error comparing the passwords");
           }
 
           if (isMatch) {
@@ -230,12 +153,18 @@ app.post("/login", (req, res) => {
             res.redirect("/");
           } else {
             // If the passwords don't match, render the login page with an error message
-            res.render("login", { errorMessage: "Incorrect email or password.", isAuthenticated: false });
+            res.render("login", {
+              errorMessage: "Incorrect email or password.",
+              isAuthenticated: false,
+            });
           }
         });
       } else {
         // If the email doesn't exist, render the login page with an error message
-        res.render("login", { errorMessage: "Incorrect email or password.", isAuthenticated: false });
+        res.render("login", {
+          errorMessage: "Incorrect email or password.",
+          isAuthenticated: false,
+        });
       }
     }
   );
@@ -243,7 +172,7 @@ app.post("/login", (req, res) => {
 
 // Route for the login page
 app.get("/login", function (req, res) {
-  res.render("login", {isAuthenticated: false});
+  res.render("login", { isAuthenticated: false });
 });
 
 //route to get register page
@@ -253,82 +182,112 @@ app.get("/register", function (req, res) {
   let lastName = "";
   let email = "";
 
-  res.render("register", { errorMessage, firstName, lastName, email ,isAuthenticated: false});
+  res.render("register", {
+    errorMessage,
+    firstName,
+    lastName,
+    email,
+    isAuthenticated: false,
+  });
 });
 
-app.post('/register', (req, res) => {
+app.post("/register", (req, res) => {
   const { firstName, lastName, email, password, passwordConfirm } = req.body;
-  let errorMessage = '';
+  let errorMessage = "";
 
   // Check for empty fields
   if (!firstName || !lastName || !email || !password || !passwordConfirm) {
-    errorMessage = 'All fields are required.';
-    return res.render("register", { errorMessage, firstName, lastName, email ,isAuthenticated: false});
+    errorMessage = "All fields are required.";
+    return res.render("register", {
+      errorMessage,
+      firstName,
+      lastName,
+      email,
+      isAuthenticated: false,
+    });
   }
 
   // Check for password mismatch
   if (password !== passwordConfirm) {
-    errorMessage = 'Passwords do not match.';
-    return res.render("register", { errorMessage, firstName, lastName, email ,isAuthenticated: false});
+    errorMessage = "Passwords do not match.";
+    return res.render("register", {
+      errorMessage,
+      firstName,
+      lastName,
+      email,
+      isAuthenticated: false,
+    });
   }
 
   // Check if the email already exists in the database
-  connection.query('SELECT * FROM user WHERE email = ?', [email], (error, results) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send('Error registering the user');
-    }
-
-    if (results.length > 0) {
-      errorMessage = 'Email already exists.';
-      return res.render("register", { errorMessage, firstName, lastName, email ,isAuthenticated: false});
-    }
-
-    // Hash the password before inserting the user into the database
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Error hashing the password');
+  connection.query(
+    "SELECT * FROM user WHERE email = ?",
+    [email],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Error registering the user");
       }
 
-      // If all validation passes, insert the new user into the database with the hashed password
-      const insertUserQuery = `
+      if (results.length > 0) {
+        errorMessage = "Email already exists.";
+        return res.render("register", {
+          errorMessage,
+          firstName,
+          lastName,
+          email,
+          isAuthenticated: false,
+        });
+      }
+
+      // Hash the password before inserting the user into the database
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error hashing the password");
+        }
+
+        // If all validation passes, insert the new user into the database with the hashed password
+        const insertUserQuery = `
         INSERT INTO user (first_name, last_name, email, password)
         VALUES (?, ?, ?, ?)
       `;
-      connection.query(insertUserQuery, [firstName, lastName, email, hash], (error, results) => {
-        if (error) {
-          console.error(error);
-          return res.status(500).send('Error registering the user');
-        }
+        connection.query(
+          insertUserQuery,
+          [firstName, lastName, email, hash],
+          (error, results) => {
+            if (error) {
+              console.error(error);
+              return res.status(500).send("Error registering the user");
+            }
 
-        // Redirect the user to the login page or any other page if you want
-        return res.redirect('/login');
+            // Redirect the user to the login page or any other page if you want
+            return res.redirect("/login");
+          }
+        );
       });
-    });
-  });
+    }
+  );
 });
-
-
 
 // Route for the terms page
 app.get("/terms", function (req, res) {
-  res.render('terms', { isAuthenticated: false });
+  res.render("terms", { isAuthenticated: false });
 });
 
 // Route for the privacy page
 app.get("/privacy", function (req, res) {
-  res.render('privacy', { isAuthenticated: false });
+  res.render("privacy", { isAuthenticated: false });
 });
 
 // Route for the faq page
 app.get("/faq", function (req, res) {
-  res.render('faq', { isAuthenticated: false });
+  res.render("faq", { isAuthenticated: false });
 });
 
 // Route for the about page
 app.get("/about", function (req, res) {
-  res.render('about', { isAuthenticated: false });
+  res.render("about", { isAuthenticated: false });
 });
 
 // Route for the contact us page
@@ -347,7 +306,7 @@ app.get("/logout", function (req, res) {
 app.post("/add-to-playlist", checkAuthenticated, (req, res) => {
   const userId = req.session.authen; // Get the user ID from the session
   const { record_id } = req.body; // Get the record ID from the submitted form
-  
+
   console.log("Add-to-playlist record_id:", record_id); // Add this line to check the value
 
   // Validate the record ID
@@ -365,10 +324,7 @@ app.post("/add-to-playlist", checkAuthenticated, (req, res) => {
       res.redirect("/discover"); // Redirect to the myplaylist page
     }
   );
-
-  
 });
-
 
 // Route to handle the unlike action
 app.post("/remove-from-playlist", checkAuthenticated, (req, res) => {
@@ -432,49 +388,14 @@ GROUP BY
     res.render("myplaylist", {
       record: rows,
       isAuthenticated: isAuthenticated,
-      userdata: req.user
+      userdata: req.user,
     });
   });
 });
 
-
-
-
 // Route for the pricing page
 app.get("/pricing", function (req, res) {
-  res.render('pricing', { isAuthenticated: false });
-});
-
-//create separate routes in your index.js file to fetch genres and artists from the database:
-app.get('/genres', (req, res) => {
-  connection.query('SELECT * FROM genre ORDER BY genre_title ASC', (error, results) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send('Error fetching genres');
-    }
-    res.json(results);
-  });
-});
-//create separate routes in your index.js file to fetch genres and artists from the database:
-
-//create separate routes in your index.js file to fetch genres and artists from the database:
-app.get('/artists', (req, res) => {
-  connection.query('SELECT * FROM artist ORDER BY artist_name ASC', (error, results) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send('Error fetching artists');
-    }
-    res.json(results);
-  });
-});
-
-//In your routes/index.js (or the relevant route file), create a new route for fetching filtered records. The route should accept query parameters for each filter.
-app.get('/filteredRecords', async (req, res) => {
-  const { genre, artist, likes, song } = req.query;
-  console.log('Filter values:', { genre, artist, likes, song });
-  // Fetch filtered records from the database based on the query parameters
-  const filteredRecords = await getFilteredRecords(genre, artist, likes, song);
-  res.json(filteredRecords);
+  res.render("pricing", { isAuthenticated: false });
 });
 
 
@@ -512,8 +433,6 @@ app.get("/collections", function (req, res) {
   GROUP BY
     user_playlist.user_id;
   `;
-  
-
 
   // query for fetching comments for users
   let commentsQuery = `
@@ -536,7 +455,6 @@ app.get("/collections", function (req, res) {
         user_playlist
     );
   `;
-  
 
   connection.query(collectionsQuery, [userId], (err, userCollections) => {
     if (err) {
@@ -576,20 +494,18 @@ app.post("/add-comment", (req, res) => {
     (error, results) => {
       if (error) {
         console.error(error);
-        res.status(500).send("Error inserting new comment into collection_comments table");
+        res
+          .status(500)
+          .send("Error inserting new comment into collection_comments table");
         return;
       }
 
-      res.redirect('/collections');
+      res.redirect("/collections");
     }
   );
 });
 
-
-
-
-
-app.get('/collection/:userId', (req, res) => {
+app.get("/collection/:userId", (req, res) => {
   let isAuthenticated = req.session && req.session.authen;
   let userId = req.params.userId;
   let query = `
@@ -603,13 +519,14 @@ app.get('/collection/:userId', (req, res) => {
   WHERE user_playlist.user_id = ?
   GROUP BY record.record_id, artist.artist_id;`;
 
-
   connection.query(query, [userId], (err, records) => {
     if (err) throw err;
-    res.render('user_collection', { records, isAuthenticated: isAuthenticated });
+    res.render("user_collection", {
+      records,
+      isAuthenticated: isAuthenticated,
+    });
   });
 });
-
 
 // Like a collection
 app.post("/like-collection", (req, res) => {
@@ -624,7 +541,9 @@ app.post("/like-collection", (req, res) => {
     (error, results) => {
       if (error) {
         console.error(error);
-        res.status(500).send("Error checking if user has already liked the collection");
+        res
+          .status(500)
+          .send("Error checking if user has already liked the collection");
         return;
       }
 
@@ -641,11 +560,13 @@ app.post("/like-collection", (req, res) => {
         (error, results) => {
           if (error) {
             console.error(error);
-            res.status(500).send("Error inserting new like into collection_likes table");
+            res
+              .status(500)
+              .send("Error inserting new like into collection_likes table");
             return;
           }
 
-          res.redirect('/collections');
+          res.redirect("/collections");
         }
       );
     }
@@ -669,11 +590,10 @@ app.post("/unlike-collection", (req, res) => {
         return;
       }
 
-      res.redirect('/collections');
+      res.redirect("/collections");
     }
   );
 });
-
 
 //account summary
 app.get("/account", function (req, res) {
@@ -683,9 +603,9 @@ app.get("/account", function (req, res) {
   }
 
   let userId = req.session.authen;
-  let sql = "SELECT user.user_id, user.first_name, user.last_name, user.email, COUNT(user_playlist.user_playlist_id) AS number_of_songs FROM user JOIN user_playlist ON user_playlist.user_id = user.user_id  WHERE user.user_id = 1;"
-  
-  connection.query(sql, [userId, userId], function (error, results) {
+  let sql =
+    "SELECT user.user_id, user.first_name, user.last_name, user.email, COUNT(user_playlist.user_playlist_id) AS number_of_songs FROM user JOIN user_playlist ON user_playlist.user_id = user.user_id WHERE user.user_id = ?";
+  connection.query(sql, [userId], function (error, results) {
     if (error) {
       console.log(error);
       res.sendStatus(500);
@@ -696,19 +616,12 @@ app.get("/account", function (req, res) {
       first_name: results[0].first_name,
       last_name: results[0].last_name,
       email: results[0].email,
-      number_of_songs: results[0].number_of_songs
+      number_of_songs: results[0].number_of_songs,
     };
 
     res.render("account", { isAuthenticated: true, userDetails: userDetails });
   });
 });
-
-
-
-
-
-
-
 
 // Start listening for incoming requests on the defined port
 app.listen(PORT, function () {

@@ -1,19 +1,29 @@
+<!--Bottombar.ejs is is used on every page as a partial template to include a bottom bar with links and information. It also containers footer tags, closing body tag and closing html tags-->
+<!--Footer created with a light background and padding of 4-->
 <footer class="bg-light py-4">
+  <!--container to hold contents of footer-->
   <div class="container">
+    <!--row to that holds three columns-->
     <div class="row">
+          <!--about column which contains information about the website-->
       <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
         <h5 class="mb-3"><a href="/about">About Stacks of Wax</a></h5>
         <p class="mb-0">Stacks of Wax is an online music streaming platform that allows you to discover new music and create your own playlists.</p>
       </div>
+
+      <!--newsletter with subscription button that is not functional-->
       <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
         <h5 class="mb-3">Newsletter Subscription</h5>
         <form>
+          <!--non-functional subscription button-->
           <div class="input-group mb-3">
             <input type="email" class="form-control" placeholder="Enter your email address" aria-label="Email" aria-describedby="button-addon2">
             <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
           </div>
         </form>
       </div>
+
+      <!--other services - non functional static pages-->
       <div class="col-lg-4">
         <h5 class="mb-3">Legal</h5>
         <ul class="list-unstyled">
@@ -22,8 +32,10 @@
         </ul>
       </div>
     </div>
+    <!--span and copy is HTML tags used to show copy right symbol-->
     <div class="d-flex justify-content-between mt-3">
       <span>&copy; 2023 Stacks of Wax</span>
+      <!--bootstrap for inline elemenst to be stacked ontop of each other-->
       <ul class="list-inline">
         <li class="list-inline-item"><a href="/contactus">Contact Us</a></li>
         <li class="list-inline-item"><a href="/faq">FAQ</a></li>
@@ -31,5 +43,8 @@
     </div>
   </div>
 </footer>
+<!--footer end-->
 </body>
+<!--closing body tags-->
 </html>
+<!--closing html tag-->

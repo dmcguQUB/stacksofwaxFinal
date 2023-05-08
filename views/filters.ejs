@@ -1,0 +1,49 @@
+  <!--Filter.ejs is a partial EJS template to modularize the discovery.ejs page. This holds filters for record genre and search feature for artists in the discover.ejs-->
+  <!--Filter and Search form row-->
+  <div class="row">
+    <!--Genre filter column. This gets the genre information using SQL query of database from route discover.-->
+    <div class="col-md-4 col-sm-12 artist-genre-filter">
+      <form class="discover-filter-form" method="get" action="/discover">
+        <div class="input-group">
+          <label class="input-group-text" for="genre">Genre:</label>
+          <select class="form-select" id="genre" name="genre">
+            <option value="">Select Genre</option>
+            <!--Loops through each of the genres from SQL query and displays the genre title-->
+            <% genres.forEach(genre => { %>
+            <option value="<%= genre.genre_title %>">
+              <%= genre.genre_title %>
+            </option>
+            <% }); %>
+          </select>
+          <button class="btn btn-primary" type="submit">Filter</button>
+        </div>
+      </form>
+    </div>
+
+    <!--Artist search filter column. This allows users to search artists by name-->
+    <div class="col-md-8 col-sm-12 artist-genre-filter">
+      <form class="discover-search-form" method="get" action="/discover">
+        <div class="input-group">
+          <label class="input-group-text" for="artist">Artist:</label>
+          <input
+            class="form-control"
+            list="artists"
+            id="artist"
+            type="text"
+            name="artist"
+            placeholder="Search by artist"
+          />
+          <!--Datalist element used. This allows users to select a pre-defined artist list or they can search by name using text -->
+          <datalist id="artists">
+            <!--For loop which iterates through each artist within list-->
+            <% artists.forEach(artist => { %>
+            <option value="<%= artist.artist_name %>">
+              <%= artist.artist_name %>
+            </option>
+            <% }); %>
+          </datalist>
+          <!--submit button-->
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+      </form>
+    </div>

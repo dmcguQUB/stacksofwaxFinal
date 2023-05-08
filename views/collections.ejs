@@ -1,7 +1,11 @@
-<%- include('header') %>
-<%- include('navbar') %>
+<!--Collection EJS file. This is where users can explore collections created by other users, like collections, and leave comments on them. -->
 
+<!--Header and Navbar-->
+<%- include('header', {bodyClass: ''}) %> <%- include('navbar') %>
+
+<!-- Container for the main content -->
 <div class="container mt-5">
+  <!-- Heading row -->
   <div class="row">
     <div class="col-12">
       <h1>User Collections</h1>
@@ -9,63 +13,107 @@
     </div>
   </div>
 
+  <!-- Loop through userCollections and display each collection -->
   <div class="row">
     <% userCollections.forEach(function(collection) { %>
     <div class="col-lg-4">
       <div class="card mb-4 shadow-sm">
         <div class="card-body">
+          <!-- Display the collection owner's full bname -->
           <h5 class="card-title">
-            <%= collection.first_name %> <%= collection.last_name %>'s Collection
+            <%= collection.first_name %> <%= collection.last_name %>'s
+            Collection
           </h5>
-          <p class="card-text">Songs: <%= collection.record_count %></p>
-          <a href="/collection/<%= collection.user_id %>" class="btn btn-primary">View Collection</a>
+          <!-- Display the number of records in the collection -->
+          <p class="card-text">Records: <%= collection.record_count %></p>
+          <!-- Link to view the collection populated with collection of user with specific id-->
+          <a
+            href="/collection/<%= collection.user_id %>"
+            class="btn btn-primary"
+            >View Collection</a
+          >
+          <!-- Display the number of likes of collection -->
           <p class="card-text">Likes: <%= collection.like_count %></p>
-          <% if (isAuthenticated) { %> 
-            <% if (collection.has_liked > 0) { %>
-              <form method="POST" action="/unlike-collection">
-                <input type="hidden" name="user_id" value="<%= userId %>" />
-                <input type="hidden" name="liked_user_id" value="<%= collection.user_id %>" />
-                <button type="submit" class="btn btn-danger">Remove Like</button>
-              </form>
-            <% } else { %>
-              <form method="POST" action="/like-collection">
-                <input type="hidden" name="user_id" value="<%= userId %>" />
-                <input type="hidden" name="liked_user_id" value="<%= collection.user_id %>" />
-                <button type="submit" class="btn btn-secondary">Like</button>
-              </form>
-            <% } %>
+
+          <!-- If the user is logged in, show like/unlike buttons -->
+          <% if (isAuthenticated) { %> <% if (collection.has_liked > 0) { %>
+          <!-- If the user has liked the collection, show the unlike button -->
+          <form method="POST" action="/unlike-collection">
+            <input type="hidden" name="user_id" value="<%= userId %>" />
+            <input
+              type="hidden"
+              name="liked_user_id"
+              value="<%= collection.user_id %>"
+            />
+            <button type="submit" class="btn btn-danger">Remove Like</button>
+          </form>
           <% } else { %>
-            <span>Please log in to like collections</span>
+          <!-- If the user has not liked the collection, show the like button -->
+
+          <form method="POST" action="/like-collection">
+            <input type="hidden" name="user_id" value="<%= userId %>" />
+            <input
+              type="hidden"
+              name="liked_user_id"
+              value="<%= collection.user_id %>"
+            />
+            <button type="submit" class="btn btn-secondary">Like</button>
+          </form>
+          <% } %>
+          <!-- If the user is not logged in, show a message to log in -->
+          <% } else { %>
+          <span>Please log in to like collections</span>
           <% } %>
 
           <!-- Display comments -->
           <div class="comments">
-            <% comments.forEach(function(comment) { %>
-              <% if (comment.playlist_creator_id === collection.user_id) { %>
-                <p><strong><%= comment.commenter_first_name %> <%= comment.commenter_last_name %>:</strong> <%= comment.comment %></p>
-              <% } %>
-            <% }) %>
+            <!-- Loop through comments and display each comment -->
+
+            <% comments.forEach(function(comment) { %> <% if
+            (comment.playlist_creator_id === collection.user_id) { %>
+            <!--Display their full name and comment in bold-->
+            <p>
+              <strong
+                ><%= comment.commenter_first_name %> <%=
+                comment.commenter_last_name %>:</strong
+              >
+              <%= comment.comment %>
+            </p>
+            <% } %> <% }) %>
           </div>
 
           <!-- Comment form -->
+          <!--if user logged in show comment form-->
           <% if (isAuthenticated) { %>
-            <form method="POST" action="/add-comment">
-              <input type="hidden" name="commenter_id" value="<%= userId %>" />
-              <input type="hidden" name="playlist_creator_id" value="<%= collection.user_id %>" />
-              <div class="form-group">
-                <textarea class="form-control" name="comment" rows="3" placeholder="Leave a comment"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+          <form method="POST" action="/add-comment">
+            <!--hidden type used here to store information needed for comments including user_id of the person who created collection and user_id of user wanting to comment-->
+            <input type="hidden" name="commenter_id" value="<%= userId %>" />
+            <input
+              type="hidden"
+              name="playlist_creator_id"
+              value="<%= collection.user_id %>"
+            />
+            <!-- Textarea for the user to write their comment -->
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                name="comment"
+                rows="3"
+                placeholder="Leave a comment"
+              ></textarea>
+            </div>
+            <!-- Submit button to post the comment -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
           <% } else { %>
-            <span>Please log in to add comments</span>
+          <!-- If the user is not logged in, show a message to log in -->
+          <span>Please log in to add comments</span>
           <% } %>
-
         </div>
       </div>
     </div>
     <% }) %>
   </div>
 </div>
-
+<!--Bottombar ejs file-->
 <%- include('bottombar') %>
