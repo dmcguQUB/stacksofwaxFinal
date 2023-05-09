@@ -1,18 +1,20 @@
-//MAMP
-//defines connection to a mySQL database using the mysql node module. This creates db object which then connects to the datasbse using using the mysql.createConnection() method
-//after creating the obkect the db.connect() method establishes the connection between the database and server. If there is an error, an error message is provided.
-// The module.exports statement allows for the db connection object to be imported into other parts of the application (i.e. index.js file)
+//Import the mysql module to allow server to interact with SQL database
 let mysql  = require('mysql');
+
+// Create the connection to the MAMP sql database
 let db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'stacksofwax',
-    port: '8889' 
+    host: 'localhost', // The database server's address
+    user: 'root',      // The database user's username
+    password: 'root',  // The database user's password
+    database: 'stacksofwax', // The name of the database to connect to
+    port: '8889'        // The port number the database server is listening on
 });
 
-db.connect((err)=> {
+// Set up the connection to the database and excecute
+db.connect((err) => {
+    // If error throw
     if(err) throw err;
 });
 
+// Export the connection object so that it can be used in other parts of the application
 module.exports = db;
