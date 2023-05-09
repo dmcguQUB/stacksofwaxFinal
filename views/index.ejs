@@ -1,113 +1,160 @@
-<%- include('header', {bodyClass: ''}) %>
-<%- include('navbar') %>
+<!--Index EJS file. This page is the landing page for the whole website.-->
+<!--Features include a navbar, hero section, user reviews section and services menu section-->
+<!--Authenticated users will have more features within the Navbar, services section and a personalised welcome message-->
+<!--Unauthenticated users will have limited features within the services and navabar. They will be directed to register or login.-->
 
+<!--Include for both header and navbar-->
+<%- include('header', {bodyClass: ''}) %> <%- include('navbar') %>
 
- <!-- HERO -->
+<!-- HERO -->
+<!--Hero container. Height is 100% viewport and aligns all items in the vertically centre using d-flex and aligns all the classes  centrally-->
 <div class="hero vh-100 d-flex align-items-center" id="home">
   <div class="container">
     <div class="row">
+      <!--col-lg-7 creates columns within row that is 7/12 available columns on large device-->
+      <!--mx-auto centres the column on the horizontal plane-->
+      <!--text -centre ensurs that all text is centresed-->
       <div class="col-lg-7 mx-auto text-center">
+        <!--Check if the user is authenticated-->
         <% if (isAuthenticated) { %>
-          <h1 class="display-4 text-white">Good Morning, <%= userdata.first_name %></h1>
+        <!--Personalised message using the user's first name-->
+        <h1 class="display-4 text-white">
+          Good Morning, <%= userdata.first_name %>
+        </h1>
         <% } else { %>
-          <h1 class="display-4 text-white">Good Day</h1>
+        <!--Default message if the user is not authenticated-->
+        <h1 class="display-4 text-white">Good Day</h1>
         <% } %>
-        <p class="text-white my-3">The best place to listen and view your favourite Vinyls</p>
+        <!--my-3 adds margin to intro message-->
+        <p class="text-white my-3">
+          The best place to listen and view your favourite Vinyls
+        </p>
+        <!--Link to discover page-->
         <a class="btn me-2 btn-primary" href="/discover">Discover</a>
+        <!--check if the user is not authenticated-->
         <% if (!isAuthenticated) { %>
-          <a class="btn btn-outline-light" href="/register">Sign Up</a>
+        <!--If not, provide button and route to register-->
+        <a class="btn btn-outline-light" href="/register">Sign Up</a>
         <% } else { %>
-          <a class="btn btn-outline-light" href="/account">My Account</a>
+        <!--If they are autheticated provide button and route to my account page-->
+        <a class="btn btn-outline-light" href="/account">My Account</a>
         <% } %>
       </div>
-    </div>
-  </div>
-</div><!-- //HERO -->
-
-<!--user review file-->
-<div class="container my-5" id="user-reviews">
-  <div class="row">
-    <div class="col-md-8 mx-auto">
-      <h1 class="text-center mb-4">User Reviews</h1>
-
-      <div class="card mb-3 review-card">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="https://st.focusedcollection.com/13397678/i/650/focused_167686850-stock-photo-portrait-man-smiling-outdoors.jpg" alt="User Image" class="img-fluid" />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">John Doe</h5>
-              <p class="card-text">
-                "Stacks of Wax is the best music streaming platform out there. I love the wide range of songs available and the ability to create my own playlists."
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="card mb-3 review-card">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2019/08/woman-portrait-smile-dimples-1296x728-body2-affiliative-1296x728.jpg?w=1155&h=1528" alt="User Image" class="img-fluid" />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Jane Smith</h5>
-              <p class="card-text">
-                "I've been using Stacks of Wax for a year now and it's definitely my go-to music streaming service. The app is easy to use and I love being able to discover new artists and songs."
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="card mb-1 review-card">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2021_07/2233721/171120-smile-stock-njs-333p.jpg" alt="User Image" class="img-fluid" />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Mark Johnson</h5>
-              <p class="card-text">
-                "I've tried a few different music streaming services but Stacks of Wax is by far the best. The sound quality is great and I love the option to download songs for offline listening."
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
     </div>
   </div>
 </div>
-       <!-- SERVICES -->
-<section id="section">
-  <div class="container">
-    <!--click onto discover if you select any of the panel-->
-      <div class="row text-center">
-        <div class="col">
-          <h1 class="text-primary1">Menu</h1>
-          <p>Select what you need</p>
+<!--HERO End -->
+
+<!--USER Reviews Section-->
+<!--container class for user reviews wuth vertical margin to add spacing-->
+<div class="container my-5">
+  <div class="row">
+    <!--col-md-8 class creates column within row that takes up 8 /12 columns-->
+    <!--mx-auto class centres the columns horizontally-->
+    <div class="col-md-8 mx-auto">
+      <!--Heading with text aligned centrally and margin added to the bottom-->
+      <h1 class="text-center mb-4">User Reviews</h1>
+
+      <!--User review 1-->
+      <!--Review cards created using bootstrap-->
+      <div class="card mb-3 review-card">
+        <!--row for review with g-0 which removes the spacing between the coumns meaning text and image are aligned-->
+        <div class="row g-0">
+          <!--Column for the image of the user-->
+          <div class="col-md-4">
+            <img
+              src="https://st.focusedcollection.com/13397678/i/650/focused_167686850-stock-photo-portrait-man-smiling-outdoors.jpg"
+              alt="User Image"
+              class="img-fluid"
+            />
+          </div>
+          <!--Column for the review section-->
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Fred Sheeran</h5>
+              <p class="card-text">
+                "StacksOfWax is my favourite place to collect and share records
+                with friends. Can't recommend enough!"
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-<!-- SERVICES -->
-<section id="section">
-  <div class="container">
-    <a href="/discover">
-      <div class="row text-center">
+
+      <!--User review 2-->
+      <div class="card mb-3 review-card">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2019/08/woman-portrait-smile-dimples-1296x728-body2-affiliative-1296x728.jpg?w=1155&h=1528"
+              alt="User Image"
+              class="img-fluid"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Jolly Parton</h5>
+              <p class="card-text">
+                "I have been using the website for years now and it's defintely
+                my favourite place to un-wind"
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </a>
-    <div class="row g-4">
-      <% if (isAuthenticated) { %>
-        <%- include('loggedin-services') %>
-      <% } else { %>
-        <%- include('guest-services') %>
-      <% } %>
+
+      <!--User review 3-->
+      <div class="card mb-1 review-card">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2021_07/2233721/171120-smile-stock-njs-333p.jpg"
+              alt="User Image"
+              class="img-fluid"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Kate Winslots</h5>
+              <p class="card-text">
+                "I love to make music myself but I love to collect records as a
+                hobby. StacksOfWax is where I get to do this."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
-<!-- SERVICES -->
-<!--Bottom bar-->
-<%- include('bottombar') %>
+</div>
+<!--USER Reviews End-->
+
+<!-- SERVICES Section -->
+  <div class="container">
+    <!--click onto discover if you select any of the panel-->
+    <div class="row text-center">
+      <!--Menu message-->
+      <div class="col">
+        <h1 class="text-primary1">Menu</h1>
+        <p>Select what you need</p>
+      </div>
+    </div>
+
+    <!--Container for services-->
+      <div class="container">
+        <!--Create horizontal group of columns for service cards-->
+        <div class="row g-4 my-4">
+          <!--Check if they are authenticated-->
+          <% if (isAuthenticated) { %> 
+            <!--If so then show the logged in services template-->
+            <%- include('loggedin-services') %> 
+          <% } else { %> 
+            <!--If not authenticated then show guest services-->
+            <%- include('guest-services') %> <% } %>
+        </div>
+      </div>
+    <!-- SERVICES -->
+  </div>
+
+ <!--Bottom bar-->
+ <%- include('bottombar') %>

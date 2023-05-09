@@ -1,10 +1,14 @@
-<!-- Include your existing service items for logged-in users -->
+<!-- Logged in services EJS. If the users are authenticated these services are displayed on the index file -->
 
 <!-- Discovery page with full list of records -->
 <div class="row g-4">
+  <!--Column for service takes up 4 / 12 columns in large screen and 6/12 on small screens-->
   <div class="col-lg-4 col-sm-6">
+    <!--Link to discover route-->
     <a href="/discover">
+      <!--Service and card-effect are bootstrap for styling. bounceInUp is used to add boucning effect to move the card up and down when hoovering -->
       <div class="service card-effect bounceInUp">
+        <!--Icon for service-->
         <div class="iconbox">
           <i class="fa-solid fa-eye"></i>
         </div>
@@ -13,6 +17,7 @@
       </div>
     </a>
   </div>
+
   <!--Playlist page for the user-->
   <div class="col-lg-4 col-sm-6">
     <a href="/myplaylist">
@@ -25,6 +30,7 @@
       </div>
     </a>
   </div>
+
   <!--Collections of all users-->
   <div class="col-lg-4 col-sm-6">
     <a href="/collections">
