@@ -8,7 +8,7 @@
   <!--register header-->
   <h1 class="login-title">Register Form</h1>
   <!-- Error message - if there is an error message variable defined an alert will be displayed in a bootstrap alert component-->
-  <% if (typeof errorMessage !== 'undefined') { %>
+  <% if (errorMessage) { %>
   <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
   <% } %>
   <!--create the horizontal rows for bootstrap grid system-->

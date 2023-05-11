@@ -54,6 +54,13 @@ function checkAuthenticated(req, res, next) {
   res.redirect("/login"); // if not autheticated then redirected to login
 }
 
+//Route for login page
+app.get("/login", (req, res) => {
+  // display the login page with isAuthenticated to false
+  res.render("login", { isAuthenticated: false });
+});
+
+
 /*Login confirmation
 Route to handle the login submission for a user 
  */
@@ -102,12 +109,6 @@ app.post("/login", (req, res) => {
       }
     }
   );
-});
-
-//Route for login page
-app.get("/login", (req, res) => {
-  // display the login page with isAuthenticated to false
-  res.render("login", { isAuthenticated: false });
 });
 
 /* Route to logout user

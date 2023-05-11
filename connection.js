@@ -6,7 +6,7 @@ let db = mysql.createConnection({
     host: 'localhost', // The database server's address
     user: 'root',      // The database user's username
     password: 'root',  // The database user's password
-    database: 'stacksofwax', // The name of the database to connect to
+    database: '40382237', // The name of the database to connect to
     port: '8889'        // The port number the database server is listening on
 });
 

@@ -16,7 +16,7 @@
   <!-- Loop through userCollections and display each collection -->
   <div class="row">
     <% userCollections.forEach(function(collection) { %>
-    <div class="col-lg-4">
+    <div class="col-lg-4 mb-4">
       <div class="card mb-4 shadow-sm">
         <div class="card-body">
           <!-- Display the collection owner's full bname -->
@@ -45,7 +45,7 @@
               name="liked_user_id"
               value="<%= collection.user_id %>"
             />
-            <button type="submit" class="btn btn-danger">Remove Like</button>
+            <button type="submit" class="btn btn-danger mb-1">Remove Like</button>
           </form>
           <% } else { %>
           <!-- If the user has not liked the collection, show the like button -->
@@ -57,7 +57,7 @@
               name="liked_user_id"
               value="<%= collection.user_id %>"
             />
-            <button type="submit" class="btn btn-secondary">Like</button>
+            <button type="submit" class="btn btn-secondary mb-1">Like</button>
           </form>
           <% } %>
           <!-- If the user is not logged in, show a message to log in -->
@@ -66,7 +66,7 @@
           <% } %>
 
           <!-- Display comments -->
-          <div class="comments">
+          <div class="comments mb-1">
             <!-- Loop through comments and display each comment -->
 
             <% comments.forEach(function(comment) { %> <% if
@@ -103,7 +103,7 @@
               ></textarea>
             </div>
             <!-- Submit button to post the comment -->
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
           </form>
           <% } else { %>
           <!-- If the user is not logged in, show a message to log in -->
